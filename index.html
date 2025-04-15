@@ -22,6 +22,8 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow-x: hidden;
+      position: relative;
     }
     
     .main-container {
@@ -29,6 +31,8 @@
       max-width: 500px;
       padding: 20px;
       text-align: center;
+      position: relative;
+      z-index: 2;
     }
     
     .content-card {
@@ -39,12 +43,27 @@
       margin-bottom: 20px;
       backdrop-filter: blur(5px);
       border: 1px solid rgba(46, 125, 50, 0.1);
+      transform: translateY(0);
+      transition: all 0.5s ease-out;
+      opacity: 1;
+    }
+    
+    .content-card.hide {
+      transform: translateY(-20px);
+      opacity: 0;
+      pointer-events: none;
     }
     
     h1 {
       color: var(--primary);
       margin-bottom: 20px;
       font-size: 1.8rem;
+      animation: textGlow 3s ease infinite alternate;
+    }
+    
+    @keyframes textGlow {
+      0% { text-shadow: 0 0 5px rgba(46, 125, 50, 0.3); }
+      100% { text-shadow: 0 0 10px rgba(46, 125, 50, 0.6); }
     }
     
     p {
@@ -64,12 +83,30 @@
       cursor: pointer;
       transition: all 0.3s;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
     }
     
     .donate-btn:hover {
       background: var(--primary-dark);
       transform: translateY(-2px);
       box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+    
+    .donate-btn:after {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255,255,255,0.1);
+      transform: rotate(45deg);
+      transition: all 0.5s;
+    }
+    
+    .donate-btn:hover:after {
+      left: 100%;
     }
     
     .widget-container {
@@ -81,6 +118,14 @@
       display: none;
       margin-top: 20px;
       border: 1px solid rgba(0,0,0,0.05);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: all 0.5s ease-out 0.2s;
+    }
+    
+    .widget-container.show {
+      transform: translateY(0);
+      opacity: 1;
     }
     
     iframe {
@@ -89,24 +134,55 @@
       height: 100%;
     }
     
-    .leaf-decoration {
+    /* Floating leaves animation */
+    .floating-leaves {
       position: absolute;
-      width: 40px;
-      height: 40px;
-      opacity: 0.6;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+    
+    .leaf {
+      position: absolute;
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0;
+      animation: float 15s linear infinite;
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.6;
+      }
+      90% {
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+    
+    /* Pulsing circle decoration */
+    .pulse-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(76, 175, 80, 0.1);
       z-index: -1;
+      animation: pulse 8s ease infinite;
     }
     
-    .leaf-1 {
-      top: 15%;
-      left: 10%;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%234caf50" d="M50 0 Q70 40 50 70 Q30 40 50 0 Z"/></svg>');
-    }
-    
-    .leaf-2 {
-      bottom: 20%;
-      right: 12%;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%2381c784" d="M50 0 Q80 30 50 80 Q20 30 50 0 Z"/></svg>');
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.1; }
+      50% { transform: scale(1.1); opacity: 0.2; }
+      100% { transform: scale(1); opacity: 0.1; }
     }
     
     @media (max-width: 480px) {
@@ -121,12 +197,13 @@
   </style>
 </head>
 <body>
-  <!-- Decorative leaves -->
-  <div class="leaf-decoration leaf-1"></div>
-  <div class="leaf-decoration leaf-2"></div>
+  <!-- Background animations -->
+  <div class="floating-leaves" id="leavesContainer"></div>
+  <div class="pulse-circle" style="width: 300px; height: 300px; top: -100px; right: -100px;"></div>
+  <div class="pulse-circle" style="width: 200px; height: 200px; bottom: -50px; left: -50px; animation-delay: 2s;"></div>
   
   <div class="main-container">
-    <div class="content-card">
+    <div class="content-card" id="contentCard">
       <h1>Support Our Green Mission</h1>
       <p>Help us preserve nature with your crypto donation. Every contribution helps plant trees and protect ecosystems.</p>
       <button class="donate-btn" id="donateBtn">Donate with Crypto</button>
@@ -138,16 +215,61 @@
   </div>
 
   <script>
+    // Create floating leaves
+    function createLeaves() {
+      const container = document.getElementById('leavesContainer');
+      const leafTypes = [
+        'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%234caf50" d="M50 0 Q70 40 50 70 Q30 40 50 0 Z"/></svg>',
+        'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%2381c784" d="M50 0 Q80 30 50 80 Q20 30 50 0 Z"/></svg>',
+        'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%232e7d32" d="M30 0 L70 0 L100 50 L70 100 L30 100 L0 50 Z"/></svg>'
+      ];
+      
+      for (let i = 0; i < 12; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'leaf';
+        
+        const size = Math.random() * 30 + 20;
+        const startX = Math.random() * 100;
+        const duration = Math.random() * 10 + 10;
+        const delay = Math.random() * 15;
+        const type = Math.floor(Math.random() * leafTypes.length);
+        
+        leaf.style.width = `${size}px`;
+        leaf.style.height = `${size}px`;
+        leaf.style.left = `${startX}vw`;
+        leaf.style.backgroundImage = `url('${leafTypes[type]}')`;
+        leaf.style.animationDuration = `${duration}s`;
+        leaf.style.animationDelay = `${delay}s`;
+        
+        container.appendChild(leaf);
+      }
+    }
+    
+    // Toggle widget visibility
     document.getElementById('donateBtn').addEventListener('click', function() {
-      this.style.display = 'none';
-      document.querySelector('.content-card').style.display = 'none';
+      document.getElementById('contentCard').classList.add('hide');
       document.getElementById('widgetContainer').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('widgetContainer').classList.add('show');
+      }, 50);
       
       // Smooth scroll to widget
-      document.getElementById('widgetContainer').scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-      });
+      setTimeout(() => {
+        document.getElementById('widgetContainer').scrollIntoView({
+          behavior: 'smooth',
+          block: 'center'
+        });
+      }, 300);
+    });
+    
+    // Initialize animations
+    window.addEventListener('load', function() {
+      createLeaves();
+      
+      // Add slight delay for initial animations
+      setTimeout(() => {
+        document.body.style.opacity = '1';
+      }, 100);
     });
   </script>
 </body>
