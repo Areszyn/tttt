@@ -255,7 +255,10 @@
   <div id="donateModal">
     <div class="modal-content">
       <button class="close-btn" onclick="closeDonation()">×</button>
-      <iframe class="modal-iframe" src="https://nowpayments.io/payment/?iid=6017538846&source=button"></iframe>
+      <iframe class="modal-iframe" 
+              src="https://nowpayments.io/payment/?iid=6017538846&source=button"
+              sandbox="allow-forms allow-scripts allow-same-origin allow-popups allow-modals allow-top-navigation">
+      </iframe>
     </div>
   </div>
 
@@ -263,20 +266,18 @@
     // Create floating leaves
     function createLeaves() {
       const container = document.getElementById('leaves-container');
-      const leafCount = 20; // Increased leaf count for richer effect
+      const leafCount = 20;
       
       for (let i = 0; i < leafCount; i++) {
         const leaf = document.createElement('div');
         leaf.classList.add('leaf');
         
-        // Random properties for natural variation
         const size = Math.random() * 25 + 10;
         const startPosX = Math.random() * 100;
         const duration = Math.random() * 15 + 10;
         const delay = Math.random() * 20;
         const rotation = Math.random() * 360;
         
-        // Apply styles
         leaf.style.width = `${size}px`;
         leaf.style.height = `${size}px`;
         leaf.style.left = `${startPosX}vw`;
@@ -286,7 +287,6 @@
         leaf.style.transform = `rotate(${rotation}deg)`;
         leaf.style.opacity = Math.random() * 0.5 + 0.3;
         
-        // Random leaf color variation
         const greenVariation = Math.floor(Math.random() * 30 + 180);
         leaf.style.backgroundColor = `hsl(${greenVariation}, 60%, 50%)`;
         
@@ -298,13 +298,17 @@
     function openDonation() {
       const modal = document.getElementById('donateModal');
       modal.style.display = 'flex';
-      document.body.style.overflow = 'hidden'; // Prevent scrolling
+      document.body.style.overflow = 'hidden';
+      
+      // Force iframe reload (helps with some caching issues)
+      const iframe = document.querySelector('.modal-iframe');
+      iframe.src = iframe.src;
     }
     
     function closeDonation() {
       const modal = document.getElementById('donateModal');
       modal.style.display = 'none';
-      document.body.style.overflow = ''; // Re-enable scrolling
+      document.body.style.overflow = '';
     }
     
     // Close modal when clicking outside content
