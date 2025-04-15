@@ -62,26 +62,6 @@
       animation-delay: 1s;
     }
 
-    .leaf {
-      position: absolute;
-      background-color: #4caf50;
-      border-radius: 50% 0 50% 50%;
-      opacity: 0.7;
-      animation: float 15s linear infinite;
-    }
-
-    @keyframes sway {
-      0% { transform: rotate(-2deg); }
-      100% { transform: rotate(2deg); }
-    }
-
-    @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.7; }
-      90% { opacity: 0.7; }
-      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-    }
-
     /* Main Content */
     .container {
       text-align: center;
@@ -161,9 +141,6 @@
     <div class="tree"></div>
   </div>
 
-  <!-- Floating Leaves -->
-  <div id="leaves-container"></div>
-
   <!-- Main Content -->
   <div class="container">
     <h1>Support Our Green Mission</h1>
@@ -172,7 +149,8 @@
     <button class="crypto-btn" id="donateBtn">Donate with Crypto</button>
     
     <div id="widgetContainer" class="widget-container">
-      <iframe src="https://nowpayments.io/embeds/payment-widget?iid=5363880904" 
+      <!-- Updated iframe with working donation widget -->
+      <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=93H6N7Y-V304Y6S-H3E3M38-2SEWBQZ" 
               width="100%" 
               height="100%" 
               frameborder="0" 
@@ -185,49 +163,15 @@
   </div>
 
   <script>
-    // Create floating leaves
-    function createLeaves() {
-      const container = document.getElementById('leaves-container');
-      const leafCount = 20;
-      
-      for (let i = 0; i < leafCount; i++) {
-        const leaf = document.createElement('div');
-        leaf.classList.add('leaf');
-        
-        const size = Math.random() * 25 + 10;
-        const startPosX = Math.random() * 100;
-        const duration = Math.random() * 15 + 10;
-        const delay = Math.random() * 20;
-        const rotation = Math.random() * 360;
-        
-        leaf.style.width = `${size}px`;
-        leaf.style.height = `${size}px`;
-        leaf.style.left = `${startPosX}vw`;
-        leaf.style.bottom = `-${size}px`;
-        leaf.style.animationDuration = `${duration}s`;
-        leaf.style.animationDelay = `${delay}s`;
-        leaf.style.transform = `rotate(${rotation}deg)`;
-        leaf.style.opacity = Math.random() * 0.5 + 0.3;
-        
-        const greenVariation = Math.floor(Math.random() * 30 + 180);
-        leaf.style.backgroundColor = `hsl(${greenVariation}, 60%, 50%)`;
-        
-        container.appendChild(leaf);
-      }
-    }
-
     // Toggle widget visibility
     document.getElementById('donateBtn').addEventListener('click', function() {
       this.style.display = 'none';
       document.getElementById('widgetContainer').style.display = 'block';
       
-      // Optional: Refresh the iframe to ensure it loads
+      // Refresh the iframe to ensure it loads
       const iframe = document.querySelector('#widgetContainer iframe');
       iframe.src = iframe.src;
     });
-
-    // Initialize leaves on load
-    window.onload = createLeaves;
   </script>
 </body>
 </html>
