@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Crypto Donation</title>
+  <title>Support Our Green Mission</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
@@ -11,215 +11,143 @@
       --primary-dark: #1b5e20;
       --text: #333;
       --light-bg: #f5f9f5;
-      --border: #e0e0e0;
-    }
-    
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', system-ui, sans-serif;
     }
     
     body {
-      background-color: #f8f8f8;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+      min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+    }
+    
+    .main-container {
+      width: 100%;
+      max-width: 500px;
       padding: 20px;
+      text-align: center;
     }
     
-    .donation-card {
-      background: white;
+    .content-card {
+      background: rgba(255, 255, 255, 0.95);
       border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 420px;
-      overflow: hidden;
-    }
-    
-    .donation-header {
-      background: var(--primary);
-      color: white;
-      padding: 24px;
-      text-align: center;
-    }
-    
-    .donation-header h1 {
-      font-size: 1.5rem;
-      font-weight: 600;
-    }
-    
-    .donation-body {
-      padding: 24px;
-    }
-    
-    .crypto-options {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-    
-    .crypto-option {
-      flex: 1;
-      padding: 12px;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    
-    .crypto-option:hover {
-      border-color: var(--primary-light);
-    }
-    
-    .crypto-option.active {
-      border-color: var(--primary);
-      background: var(--light-bg);
-    }
-    
-    .crypto-option img {
-      width: 32px;
-      height: 32px;
-      margin-bottom: 8px;
-    }
-    
-    .input-group {
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(46, 125, 50, 0.1);
       margin-bottom: 20px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(46, 125, 50, 0.1);
     }
     
-    .input-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 500;
-      color: var(--text);
-    }
-    
-    .input-field {
-      position: relative;
-    }
-    
-    .input-field input {
-      width: 100%;
-      padding: 14px 16px;
-      border: 2px solid var(--border);
-      border-radius: 8px;
-      font-size: 1rem;
-      transition: border 0.2s;
-    }
-    
-    .input-field input:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-    
-    .currency-symbol {
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
+    h1 {
       color: var(--primary);
-      font-weight: 600;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
     }
     
-    .min-amount {
-      font-size: 0.9rem;
-      color: #666;
-      margin-top: 8px;
+    p {
+      color: var(--text);
+      margin-bottom: 25px;
+      line-height: 1.6;
     }
     
-    .continue-btn {
-      width: 100%;
-      padding: 16px;
+    .donate-btn {
       background: var(--primary);
       color: white;
       border: none;
-      border-radius: 8px;
+      padding: 14px 28px;
+      border-radius: 50px;
       font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
-      margin-top: 12px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     
-    .continue-btn:hover {
+    .donate-btn:hover {
       background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
     
-    /* Animation */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .widget-container {
+      width: 100%;
+      height: 650px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      display: none;
+      margin-top: 20px;
+      border: 1px solid rgba(0,0,0,0.05);
     }
     
-    .donation-card {
-      animation: fadeIn 0.4s ease-out;
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .leaf-decoration {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      opacity: 0.6;
+      z-index: -1;
+    }
+    
+    .leaf-1 {
+      top: 15%;
+      left: 10%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%234caf50" d="M50 0 Q70 40 50 70 Q30 40 50 0 Z"/></svg>');
+    }
+    
+    .leaf-2 {
+      bottom: 20%;
+      right: 12%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%2381c784" d="M50 0 Q80 30 50 80 Q20 30 50 0 Z"/></svg>');
+    }
+    
+    @media (max-width: 480px) {
+      .content-card {
+        padding: 20px;
+      }
+      
+      .widget-container {
+        height: 580px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="donation-card">
-    <div class="donation-header">
-      <h1>Donation</h1>
+  <!-- Decorative leaves -->
+  <div class="leaf-decoration leaf-1"></div>
+  <div class="leaf-decoration leaf-2"></div>
+  
+  <div class="main-container">
+    <div class="content-card">
+      <h1>Support Our Green Mission</h1>
+      <p>Help us preserve nature with your crypto donation. Every contribution helps plant trees and protect ecosystems.</p>
+      <button class="donate-btn" id="donateBtn">Donate with Crypto</button>
     </div>
     
-    <div class="donation-body">
-      <div class="crypto-options">
-        <div class="crypto-option active">
-          <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT">
-          <div>USDT</div>
-        </div>
-        <div class="crypto-option">
-          <img src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="TRX">
-          <div>TRX</div>
-        </div>
-      </div>
-      
-      <div class="input-group">
-        <label>Enter amount</label>
-        <div class="input-field">
-          <input type="number" placeholder="0.00">
-          <span class="currency-symbol">USDT</span>
-        </div>
-      </div>
-      
-      <div class="input-group">
-        <label>Enter amount</label>
-        <div class="input-field">
-          <input type="number" placeholder="0.00">
-          <span class="currency-symbol">USD</span>
-        </div>
-      </div>
-      
-      <div class="min-amount">Minimum: 8.253576 USDT</div>
-      
-      <button class="continue-btn">Continue</button>
+    <div id="widgetContainer" class="widget-container">
+      <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=93H6N7Y-V304Y6S-H3E3M38-2SEWBQZ"></iframe>
     </div>
   </div>
 
   <script>
-    // Toggle active crypto option
-    const options = document.querySelectorAll('.crypto-option');
-    options.forEach(option => {
-      option.addEventListener('click', () => {
-        options.forEach(opt => opt.classList.remove('active'));
-        option.classList.add('active');
+    document.getElementById('donateBtn').addEventListener('click', function() {
+      this.style.display = 'none';
+      document.querySelector('.content-card').style.display = 'none';
+      document.getElementById('widgetContainer').style.display = 'block';
+      
+      // Smooth scroll to widget
+      document.getElementById('widgetContainer').scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
       });
-    });
-    
-    // Sync amount inputs
-    const usdtInput = document.querySelectorAll('input')[0];
-    const usdInput = document.querySelectorAll('input')[1];
-    
-    // Simple conversion example (1 USDT = 1 USD)
-    usdtInput.addEventListener('input', () => {
-      usdInput.value = usdtInput.value;
-    });
-    
-    usdInput.addEventListener('input', () => {
-      usdtInput.value = usdInput.value;
     });
   </script>
 </body>
