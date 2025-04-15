@@ -8,6 +8,8 @@
     :root {
       --primary-color: #2e7d32;
       --hover-color: #1b5e20;
+      --secondary-color: #81c784;
+      --wind-intensity: 0.5;
     }
 
     body {
@@ -15,12 +17,14 @@
       margin: 0;
       padding: 0;
       overflow-x: hidden;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      background: linear-gradient(to bottom, #a5d6a7, #81c784);
+      background: linear-gradient(135deg, #a5d6a7, #66bb6a, #43a047);
+      animation: gradientShift 15s ease infinite;
+      background-size: 200% 200%;
     }
 
     /* Forest Animation */
@@ -29,6 +33,7 @@
       width: 100%;
       height: 100%;
       z-index: -1;
+      overflow: hidden;
     }
 
     .tree {
@@ -36,7 +41,9 @@
       bottom: 0;
       background-repeat: no-repeat;
       background-size: contain;
-      animation: sway 5s infinite alternate ease-in-out;
+      animation: sway 8s infinite alternate ease-in-out;
+      filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
+      transform-origin: bottom center;
     }
 
     .tree:nth-child(1) {
@@ -62,72 +69,312 @@
       animation-delay: 1s;
     }
 
+    .tree:nth-child(4) {
+      left: 15%;
+      height: 250px;
+      width: 120px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><path fill="%2366bb6a" d="M50 0 L30 70 L70 70 L40 120 L80 120 L50 180 L60 200 L40 200 Z"/></svg>');
+      animation-delay: 0.8s;
+      opacity: 0.8;
+    }
+
+    .tree:nth-child(5) {
+      right: 5%;
+      height: 320px;
+      width: 160px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><path fill="%2343883f" d="M50 0 L20 60 L80 60 L30 110 L90 110 L50 180 L70 200 L30 200 Z"/></svg>');
+      animation-delay: 1.5s;
+    }
+
     .leaf {
       position: absolute;
-      background-color: #4caf50;
       border-radius: 50% 0 50% 50%;
-      opacity: 0.7;
+      opacity: 0;
       animation: float 15s linear infinite;
+      filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.1));
+      transform-origin: center;
+    }
+
+    /* Butterfly animation */
+    .butterfly {
+      position: absolute;
+      width: 30px;
+      height: 20px;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 60"><path fill="%23ffeb3b" d="M50 0 Q70 20 50 30 Q30 20 50 0 M50 30 Q70 40 50 60 Q30 40 50 30"/></svg>');
+      background-repeat: no-repeat;
+      background-size: contain;
+      animation: butterflyFlight 25s linear infinite;
+      z-index: 1;
+    }
+
+    /* Sun rays animation */
+    .sun {
+      position: absolute;
+      top: 10%;
+      right: 10%;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, #ffeb3b 30%, transparent 70%);
+      border-radius: 50%;
+      box-shadow: 0 0 40px #ffeb3b;
+      animation: pulse 8s ease infinite alternate;
+    }
+
+    .sun-ray {
+      position: absolute;
+      background: linear-gradient(to right, rgba(255,235,59,0.8), transparent);
+      height: 3px;
+      transform-origin: left center;
+      animation: rayPulse 8s ease infinite alternate;
+    }
+
+    /* Snowflakes */
+    .snowflake {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      filter: blur(1px);
+      animation: float linear infinite;
+    }
+
+    /* Flowers */
+    .flower {
+      position: absolute;
+      border-radius: 50%;
+      animation: float linear infinite;
+      box-shadow: 0 0 0 2px white inset;
+    }
+
+    /* Progress particles */
+    .progress-particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: white;
+      border-radius: 50%;
+      animation: particlePop 1s ease-out forwards;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     @keyframes sway {
-      0% { transform: rotate(-2deg); }
-      100% { transform: rotate(2deg); }
+      0% { transform: rotate(calc(-5deg * var(--wind-intensity)) scaleY(1); }
+      50% { transform: rotate(calc(3deg * var(--wind-intensity))) scaleY(1.02); }
+      100% { transform: rotate(calc(5deg * var(--wind-intensity))); }
     }
 
     @keyframes float {
-      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
-      10% { opacity: 0.7; }
-      90% { opacity: 0.7; }
-      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+      0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0; }
+      10% { opacity: 0.8; transform: scale(1); }
+      20% { transform: rotate(5deg); }
+      40% { transform: rotate(-5deg); }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(-100vh) rotate(360deg) scale(0.8); opacity: 0; }
+    }
+
+    @keyframes float-down {
+      0% { transform: translateY(-100%) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(100vh) rotate(180deg); opacity: 0; }
+    }
+
+    @keyframes float-up {
+      0% { transform: translateY(100%) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(180deg); opacity: 0; }
+    }
+
+    @keyframes butterflyFlight {
+      0% { transform: translate(0, 0) scaleX(1); }
+      25% { transform: translate(20vw, 15vh) scaleX(-1); }
+      50% { transform: translate(40vw, 5vh) scaleX(1); }
+      75% { transform: translate(60vw, 20vh) scaleX(-1); }
+      100% { transform: translate(80vw, 0) scaleX(1); }
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.8; }
+    }
+
+    @keyframes rayPulse {
+      0% { transform: scaleX(0.8); opacity: 0.5; }
+      50% { transform: scaleX(1.2); opacity: 0.8; }
+      100% { transform: scaleX(0.8); opacity: 0.5; }
+    }
+
+    @keyframes rotateLeaf {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes particlePop {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.5); opacity: 1; }
+      100% { transform: scale(1); opacity: 0; }
     }
 
     /* Main Content */
     .container {
       text-align: center;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       padding: 2.5rem;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
       max-width: 500px;
       width: 90%;
-      backdrop-filter: blur(5px);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      transform-style: preserve-3d;
+      perspective: 1000px;
+      animation: floatUp 1s ease-out;
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(20px) scale(0.95); opacity: 0; }
+      to { transform: translateY(0) scale(1); opacity: 1; }
     }
 
     h1 {
       color: var(--primary-color);
       margin-bottom: 1rem;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      animation: textGlow 3s ease infinite alternate;
+    }
+
+    @keyframes textGlow {
+      from { text-shadow: 0 0 5px rgba(46, 125, 50, 0.3); }
+      to { text-shadow: 0 0 10px rgba(46, 125, 50, 0.6); }
     }
 
     p {
       color: #333;
       margin-bottom: 1.5rem;
       font-size: 1.1rem;
+      line-height: 1.6;
     }
 
     .crypto-btn {
       display: inline-block;
-      padding: 12px 24px;
+      padding: 14px 28px;
       background-color: var(--primary-color);
       color: white;
       text-decoration: none;
-      border-radius: 8px;
+      border-radius: 50px;
       font-weight: 600;
       transition: all 0.3s ease;
-      border: 2px solid transparent;
+      border: none;
       cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
     }
 
     .crypto-btn:hover {
       background-color: var(--hover-color);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .crypto-btn:active {
+      transform: translateY(1px);
+    }
+
+    .crypto-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: rgba(255,255,255,0.1);
+      transform: rotate(45deg);
+      transition: all 0.5s ease;
+      pointer-events: none;
+    }
+
+    .crypto-btn:hover::after {
+      left: 100%;
     }
 
     .thank-you {
       margin-top: 1.5rem;
       color: #2e7d32;
       font-style: italic;
+      font-size: 1rem;
+      animation: fadeInOut 4s ease infinite;
+    }
+
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    /* Goal Container */
+    .goal-container {
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+    
+    .goal-text {
+      font-size: 0.9rem;
+      color: #2e7d32;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    
+    .progress-bar {
+      height: 12px;
+      background: #e0e0e0;
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .progress-fill {
+      height: 100%;
+      width: 25%;
+      background: linear-gradient(90deg, #4caf50, #8bc34a);
+      border-radius: 6px;
+      transition: width 1s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, 
+        rgba(255,255,255,0.1) 0%, 
+        rgba(255,255,255,0.3) 50%, 
+        rgba(255,255,255,0.1) 100%);
+      animation: progressShine 2s infinite linear;
+    }
+    
+    .goal-description {
+      font-size: 0.8rem;
+      color: #666;
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+    
+    @keyframes progressShine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
     }
 
     /* Widget Container */
@@ -136,19 +383,35 @@
       width: 410px;
       height: 696px;
       overflow: hidden;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
       display: none;
+      animation: expand 0.5s ease-out;
     }
 
+    @keyframes expand {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    /* Responsive adjustments */
     @media (max-width: 480px) {
       .container {
-        padding: 1.5rem;
+        padding: 1.8rem;
       }
       
       .widget-container {
         width: 100%;
         height: 600px;
+      }
+
+      .tree:nth-child(1),
+      .tree:nth-child(4) {
+        left: -5%;
+      }
+
+      .tree:nth-child(5) {
+        right: -5%;
       }
     }
   </style>
@@ -159,15 +422,29 @@
     <div class="tree"></div>
     <div class="tree"></div>
     <div class="tree"></div>
+    <div class="tree"></div>
+    <div class="tree"></div>
   </div>
 
-  <!-- Floating Leaves -->
-  <div id="leaves-container"></div>
+  <!-- Sun with rays -->
+  <div class="sun"></div>
+
+  <!-- Floating elements container -->
+  <div id="elements-container"></div>
 
   <!-- Main Content -->
   <div class="container">
     <h1>Support Our Green Mission</h1>
-    <p>Help us preserve nature with your crypto donation. Every contribution makes a difference!</p>
+    <p>Help us preserve nature with your crypto donation. Every contribution helps plant trees and protect ecosystems for future generations!</p>
+
+    <!-- Donation Goal -->
+    <div class="goal-container">
+      <div class="goal-text">Our Monthly Goal: <span id="amountRaised">$1,240</span> / $5,000</div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="goal-description">Every $100 plants 10 trees in deforested areas</div>
+    </div>
 
     <button class="crypto-btn" id="donateBtn">Donate with Crypto</button>
     
@@ -184,50 +461,437 @@
     <p class="thank-you">Thank you for helping our planet breathe easier!</p>
   </div>
 
+  <!-- Audio Elements -->
+  <audio id="hoverSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
+  <audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-positive-interface-beep-221.mp3" preload="auto"></audio>
+
   <script>
-    // Create floating leaves
-    function createLeaves() {
-      const container = document.getElementById('leaves-container');
-      const leafCount = 20;
+    // Create floating elements (leaves, butterflies, etc.)
+    function createFloatingElements() {
+      const container = document.getElementById('elements-container');
+      const elementCount = 30;
       
-      for (let i = 0; i < leafCount; i++) {
-        const leaf = document.createElement('div');
-        leaf.classList.add('leaf');
+      for (let i = 0; i < elementCount; i++) {
+        // Create leaves (70% chance) or butterflies (30% chance)
+        const isButterfly = Math.random() > 0.7;
         
-        const size = Math.random() * 25 + 10;
-        const startPosX = Math.random() * 100;
-        const duration = Math.random() * 15 + 10;
-        const delay = Math.random() * 20;
-        const rotation = Math.random() * 360;
-        
-        leaf.style.width = `${size}px`;
-        leaf.style.height = `${size}px`;
-        leaf.style.left = `${startPosX}vw`;
-        leaf.style.bottom = `-${size}px`;
-        leaf.style.animationDuration = `${duration}s`;
-        leaf.style.animationDelay = `${delay}s`;
-        leaf.style.transform = `rotate(${rotation}deg)`;
-        leaf.style.opacity = Math.random() * 0.5 + 0.3;
-        
-        const greenVariation = Math.floor(Math.random() * 30 + 180);
-        leaf.style.backgroundColor = `hsl(${greenVariation}, 60%, 50%)`;
-        
-        container.appendChild(leaf);
+        if (isButterfly) {
+          const butterfly = document.createElement('div');
+          butterfly.classList.add('butterfly');
+          
+          const size = Math.random() * 15 + 15;
+          const delay = Math.random() * 20;
+          const duration = Math.random() * 15 + 20;
+          
+          butterfly.style.width = `${size}px`;
+          butterfly.style.height = `${size * 0.66}px`;
+          butterfly.style.animationDuration = `${duration}s`;
+          butterfly.style.animationDelay = `${delay}s`;
+          
+          // Random butterfly color
+          const hue = Math.random() * 60 + 40; // Yellow to orange range
+          butterfly.style.filter = `hue-rotate(${hue}deg) brightness(1.2)`;
+          
+          container.appendChild(butterfly);
+        } else {
+          const leaf = document.createElement('div');
+          leaf.classList.add('leaf');
+          
+          const size = Math.random() * 25 + 10;
+          const startPosX = Math.random() * 100;
+          const duration = Math.random() * 15 + 10;
+          const delay = Math.random() * 20;
+          const rotation = Math.random() * 360;
+          
+          leaf.style.width = `${size}px`;
+          leaf.style.height = `${size}px`;
+          leaf.style.left = `${startPosX}vw`;
+          leaf.style.bottom = `-${size}px`;
+          leaf.style.animationDuration = `${duration}s`;
+          leaf.style.animationDelay = `${delay}s`;
+          leaf.style.transform = `rotate(${rotation}deg)`;
+          
+          // More natural leaf colors and shapes
+          const leafType = Math.random();
+          if (leafType < 0.3) {
+            // Round leaf
+            leaf.style.borderRadius = '50%';
+            leaf.style.backgroundColor = `hsl(${Math.random() * 30 + 100}, 60%, 50%)`;
+          } else if (leafType < 0.6) {
+            // Pointy leaf
+            leaf.style.borderRadius = '50% 50% 0 50%';
+            leaf.style.backgroundColor = `hsl(${Math.random() * 30 + 120}, 70%, 45%)`;
+          } else {
+            // Heart-shaped leaf
+            leaf.style.borderRadius = '50% 50% 0 0';
+            leaf.style.backgroundColor = `hsl(${Math.random() * 20 + 130}, 60%, 40%)`;
+          }
+          
+          // Add slight rotation animation to leaves
+          leaf.style.animation = `float ${duration}s linear ${delay}s infinite, 
+                                 rotateLeaf ${duration * 2}s linear ${delay}s infinite`;
+          
+          container.appendChild(leaf);
+        }
+      }
+      
+      // Add sun rays
+      const sun = document.querySelector('.sun');
+      for (let i = 0; i < 12; i++) {
+        const ray = document.createElement('div');
+        ray.classList.add('sun-ray');
+        ray.style.width = '60px';
+        ray.style.left = '40px';
+        ray.style.top = '40px';
+        ray.style.transform = `rotate(${i * 30}deg)`;
+        ray.style.animationDelay = `${Math.random() * 2}s`;
+        sun.appendChild(ray);
       }
     }
 
-    // Toggle widget visibility
+    // Toggle widget visibility with animation
     document.getElementById('donateBtn').addEventListener('click', function() {
       this.style.display = 'none';
-      document.getElementById('widgetContainer').style.display = 'block';
+      const widget = document.getElementById('widgetContainer');
+      widget.style.display = 'block';
       
-      // Optional: Refresh the iframe to ensure it loads
+      // Refresh the iframe to ensure it loads
       const iframe = document.querySelector('#widgetContainer iframe');
       iframe.src = iframe.src;
+      
+      // Add confetti effect on donation button click
+      createConfetti();
     });
 
-    // Initialize leaves on load
-    window.onload = createLeaves;
+    // Create a simple confetti effect
+    function createConfetti() {
+      const container = document.getElementById('elements-container');
+      const colors = ['#2e7d32', '#388e3c', '#43a047', '#4caf50', '#66bb6a', '#81c784', '#a5d6a7'];
+      
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.classList.add('leaf');
+        
+        const size = Math.random() * 12 + 6;
+        const startPosX = 50 + (Math.random() * 20 - 10);
+        const duration = Math.random() * 3 + 1;
+        const delay = 0;
+        
+        confetti.style.width = `${size}px`;
+        confetti.style.height = `${size}px`;
+        confetti.style.left = `${startPosX}%`;
+        confetti.style.bottom = '100px';
+        confetti.style.animationDuration = `${duration}s`;
+        confetti.style.animationDelay = `${delay}s`;
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.borderRadius = ['50%', '50% 50% 0 50%', '50% 50% 0 0'][Math.floor(Math.random() * 3)];
+        confetti.style.animation = `float ${duration}s ease-out ${delay}s forwards`;
+        
+        container.appendChild(confetti);
+        
+        // Remove confetti after animation
+        setTimeout(() => {
+          confetti.remove();
+        }, duration * 1000);
+      }
+    }
+
+    // Add interactive elements that respond to cursor movement
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      
+      // Make trees sway more when cursor is near them
+      document.querySelectorAll('.tree').forEach((tree, i) => {
+        const treeRect = tree.getBoundingClientRect();
+        const treeX = treeRect.left + treeRect.width/2;
+        const treeY = treeRect.top + treeRect.height;
+        const distance = Math.sqrt(Math.pow(e.clientX - treeX, 2) + Math.pow(e.clientY - treeY, 2));
+        
+        if (distance < 200) {
+          const intensity = 1 - (distance / 200);
+          tree.style.animation = `sway ${5 - (intensity * 2)}s infinite alternate ease-in-out`;
+          tree.style.transform = `rotate(${intensity * 8 * (i % 2 ? 1 : -1)}deg)`;
+        }
+      });
+      
+      // Create a gentle wind effect based on cursor position
+      document.documentElement.style.setProperty('--wind-intensity', x);
+      
+      // Make sun follow cursor slightly
+      const sun = document.querySelector('.sun');
+      sun.style.transform = `translate(${(x - 0.5) * 20}px, ${(y - 0.5) * 20}px) scale(1)`;
+    });
+
+    // Donation goal progress
+    function updateProgress() {
+      const raised = 1240;
+      const goal = 5000;
+      const percentage = (raised / goal) * 100;
+      
+      document.getElementById('progressFill').style.width = `${percentage}%`;
+      document.getElementById('amountRaised').textContent = `$${raised.toLocaleString()}`;
+      
+      // Add little particles when progress updates
+      if (percentage > parseFloat(document.getElementById('progressFill').style.width || 0)) {
+        createProgressParticles(percentage);
+      }
+    }
+    
+    function createProgressParticles(percentage) {
+      const progressBar = document.querySelector('.progress-fill');
+      const particleCount = Math.floor(percentage / 5);
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'progress-particle';
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.animationDelay = `${Math.random() * 0.5}s`;
+        progressBar.appendChild(particle);
+        
+        setTimeout(() => {
+          particle.remove();
+        }, 1000);
+      }
+    }
+
+    // Seasonal theme updates
+    function updateSeasonalTheme() {
+      const now = new Date();
+      const month = now.getMonth();
+      let theme;
+      
+      if (month >= 2 && month <= 4) { // Spring
+        theme = {
+          primary: '#4caf50',
+          background: ['#c8e6c9', '#a5d6a7'],
+          leaves: ['#81c784', '#66bb6a', '#4caf50'],
+          flowers: true
+        };
+      } else if (month >= 5 && month <= 7) { // Summer
+        theme = {
+          primary: '#2e7d32',
+          background: ['#a5d6a7', '#81c784'],
+          leaves: ['#388e3c', '#2e7d32', '#1b5e20'],
+          flowers: false
+        };
+      } else if (month >= 8 && month <= 10) { // Autumn
+        theme = {
+          primary: '#fb8c00',
+          background: ['#ffcc80', '#ffb74d'],
+          leaves: ['#ffa000', '#fb8c00', '#f57c00'],
+          flowers: false
+        };
+      } else { // Winter
+        theme = {
+          primary: '#bbdefb',
+          background: ['#e1f5fe', '#b3e5fc'],
+          leaves: ['#e1f5fe', '#b3e5fc', '#81d4fa'],
+          flowers: false,
+          snow: true
+        };
+      }
+      
+      // Apply theme
+      document.documentElement.style.setProperty('--primary-color', theme.primary);
+      document.body.style.background = `linear-gradient(135deg, ${theme.background[0]}, ${theme.background[1]})`;
+      
+      // Update leaf colors
+      document.querySelectorAll('.leaf').forEach(leaf => {
+        leaf.style.backgroundColor = theme.leaves[Math.floor(Math.random() * theme.leaves.length)];
+      });
+      
+      // Add seasonal elements
+      if (theme.snow) {
+        createSnowflakes();
+      } else if (theme.flowers) {
+        createFlowers();
+      }
+    }
+
+    function createSnowflakes() {
+      const container = document.getElementById('elements-container');
+      
+      for (let i = 0; i < 30; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.className = 'snowflake';
+        
+        const size = Math.random() * 10 + 5;
+        const startPosX = Math.random() * 100;
+        const duration = Math.random() * 10 + 5;
+        const delay = Math.random() * 10;
+        
+        snowflake.style.width = `${size}px`;
+        snowflake.style.height = `${size}px`;
+        snowflake.style.left = `${startPosX}vw`;
+        snowflake.style.animationDuration = `${duration}s`;
+        snowflake.style.animationDelay = `${delay}s`;
+        snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+        
+        container.appendChild(snowflake);
+      }
+    }
+
+    function createFlowers() {
+      const container = document.getElementById('elements-container');
+      
+      for (let i = 0; i < 15; i++) {
+        const flower = document.createElement('div');
+        flower.className = 'flower';
+        
+        const size = Math.random() * 20 + 10;
+        const startPosX = Math.random() * 100;
+        const duration = Math.random() * 15 + 10;
+        const delay = Math.random() * 15;
+        
+        flower.style.width = `${size}px`;
+        flower.style.height = `${size}px`;
+        flower.style.left = `${startPosX}vw`;
+        flower.style.bottom = `-${size}px`;
+        flower.style.animationDuration = `${duration}s`;
+        flower.style.animationDelay = `${delay}s`;
+        
+        // Random flower color
+        const hue = Math.random() * 360;
+        flower.style.backgroundColor = `hsl(${hue}, 80%, 70%)`;
+        
+        container.appendChild(flower);
+      }
+    }
+
+    // Time of day background updates
+    function updateBackgroundByTime() {
+      const now = new Date();
+      const hours = now.getHours();
+      let gradientStart, gradientEnd, sunPosition, sunColor;
+      
+      if (hours >= 6 && hours < 10) {
+        // Morning
+        gradientStart = '#ffcc80';
+        gradientEnd = '#81d4fa';
+        sunColor = '#ffb74d';
+      } else if (hours >= 10 && hours < 16) {
+        // Daytime
+        gradientStart = '#81d4fa';
+        gradientEnd = '#4fc3f7';
+        sunColor = '#ffeb3b';
+      } else if (hours >= 16 && hours < 20) {
+        // Evening
+        gradientStart = '#ff8a65';
+        gradientEnd = '#ba68c8';
+        sunColor = '#ff7043';
+      } else {
+        // Night
+        gradientStart = '#0d47a1';
+        gradientEnd = '#311b92';
+        sunColor = '#e1f5fe';
+        document.querySelector('.sun').style.boxShadow = '0 0 20px #e1f5fe';
+      }
+      
+      document.body.style.background = `linear-gradient(135deg, ${gradientStart}, ${gradientEnd})`;
+      document.querySelector('.sun').style.background = `radial-gradient(circle, ${sunColor} 30%, transparent 70%)`;
+      
+      // Position sun in the sky based on time
+      const sunProgress = ((hours % 12) + now.getMinutes()/60) / 12;
+      const sunX = sunProgress * 80 + 10;
+      const sunY = Math.sin(sunProgress * Math.PI) * 60 + 10;
+      
+      document.querySelector('.sun').style.left = `${sunX}%`;
+      document.querySelector('.sun').style.top = `${sunY}%`;
+    }
+
+    // Sound effects
+    const windSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-wind-ambience-599.mp3');
+    windSound.loop = true;
+    windSound.volume = 0.3;
+    
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      windSound.playbackRate = 0.8 + x * 0.4;
+    });
+    
+    // Start wind sound on first interaction
+    function startWindSound() {
+      windSound.play();
+      document.removeEventListener('click', startWindSound);
+    }
+    document.addEventListener('click', startWindSound);
+    
+    // Play sounds on interactions
+    document.querySelector('.crypto-btn').addEventListener('mouseenter', () => {
+      document.getElementById('hoverSound').currentTime = 0;
+      document.getElementById('hoverSound').play();
+    });
+    
+    document.querySelector('.crypto-btn').addEventListener('click', () => {
+      document.getElementById('clickSound').currentTime = 0;
+      document.getElementById('clickSound').play();
+    });
+
+    // Scroll interactions
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.scrollY;
+      
+      if (currentScroll > lastScroll) {
+        // Scrolling down - create leaves falling from top
+        createScrollParticles('top');
+      } else {
+        // Scrolling up - create leaves rising from bottom
+        createScrollParticles('bottom');
+      }
+      
+      lastScroll = currentScroll;
+    });
+
+    function createScrollParticles(origin) {
+      const container = document.getElementById('elements-container');
+      const particle = document.createElement('div');
+      particle.classList.add('leaf');
+      
+      const size = Math.random() * 15 + 5;
+      const startPosX = Math.random() * 100;
+      const duration = Math.random() * 3 + 2;
+      
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${startPosX}vw`;
+      particle.style.backgroundColor = `hsl(${Math.random() * 30 + 100}, 60%, ${Math.random() * 20 + 50}%)`;
+      
+      if (origin === 'top') {
+        particle.style.top = '0';
+        particle.style.animation = `float-down ${duration}s linear forwards`;
+      } else {
+        particle.style.bottom = '0';
+        particle.style.animation = `float-up ${duration}s linear forwards`;
+      }
+      
+      container.appendChild(particle);
+      
+      setTimeout(() => {
+        particle.remove();
+      }, duration * 1000);
+    }
+
+    // Initialize everything
+    window.onload = function() {
+      createFloatingElements();
+      updateProgress();
+      updateSeasonalTheme();
+      updateBackgroundByTime();
+      
+      // Simulate occasional progress updates
+      setInterval(() => {
+        const currentAmount = parseFloat(document.getElementById('amountRaised').textContent.replace('$', '').replace(',', ''));
+        if (currentAmount < 5000) {
+          document.getElementById('amountRaised').textContent = `$${(currentAmount + Math.random() * 50).toLocaleString()}`;
+          updateProgress();
+        }
+      }, 5000);
+      
+      // Update time of day every minute
+      setInterval(updateBackgroundByTime, 60000);
+    };
   </script>
 </body>
 </html>
