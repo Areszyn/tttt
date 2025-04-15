@@ -130,62 +130,25 @@
       font-style: italic;
     }
 
-    /* Payment Form Styles */
-    .payment-form {
+    /* Widget Container */
+    .widget-container {
+      margin: 1.5rem auto 0;
+      width: 410px;
+      height: 696px;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       display: none;
-      margin-top: 1.5rem;
-      text-align: left;
-    }
-
-    .form-group {
-      margin-bottom: 1rem;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: #333;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 1rem;
-    }
-
-    .submit-btn {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1rem;
-      width: 100%;
-    }
-
-    .submit-btn:hover {
-      background-color: var(--hover-color);
-    }
-
-    .payment-address {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #f5f5f5;
-      border-radius: 4px;
-      word-break: break-all;
-    }
-
-    .qr-code {
-      margin: 1rem auto;
-      max-width: 200px;
     }
 
     @media (max-width: 480px) {
       .container {
         padding: 1.5rem;
+      }
+      
+      .widget-container {
+        width: 100%;
+        height: 600px;
       }
     }
   </style>
@@ -207,61 +170,21 @@
     <p>Help us preserve nature with your crypto donation. Every contribution makes a difference!</p>
 
     <button class="crypto-btn" id="donateBtn">Donate with Crypto</button>
-
-    <div id="paymentForm" class="payment-form">
-      <div class="form-group">
-        <label for="amount">Amount (USD)</label>
-        <input type="number" id="amount" min="1" step="0.01" placeholder="10.00">
-      </div>
-      
-      <div class="form-group">
-        <label for="currency">Cryptocurrency</label>
-        <select id="currency">
-          <option value="btc">Bitcoin (BTC)</option>
-          <option value="eth">Ethereum (ETH)</option>
-          <option value="usdt">Tether (USDT)</option>
-          <option value="usdc">USD Coin (USDC)</option>
-          <option value="doge">Dogecoin (DOGE)</option>
-        </select>
-      </div>
-      
-      <button class="submit-btn" id="submitBtn">Generate Payment</button>
-      
-      <div id="paymentDetails" style="display: none;">
-        <h3>Send Payment To:</h3>
-        <div class="payment-address" id="paymentAddress"></div>
-        <div class="qr-code" id="qrCode"></div>
-        <p>Amount: <span id="paymentAmount"></span></p>
-        <p>Currency: <span id="paymentCurrency"></span></p>
-      </div>
+    
+    <div id="widgetContainer" class="widget-container">
+      <iframe src="https://nowpayments.io/embeds/payment-widget?iid=5363880904" 
+              width="100%" 
+              height="100%" 
+              frameborder="0" 
+              scrolling="no" 
+              style="overflow-y: hidden;">
+      </iframe>
     </div>
 
     <p class="thank-you">Thank you for helping our planet breathe easier!</p>
   </div>
 
   <script>
-    // API Configuration
-    const API_KEY = '93H6N7Y-V304Y6S-H3E3M38-2SEWBQZ';
-    const PUBLIC_KEY = 'a822f100-d45f-400d-812d-660cc2b8ed61';
-    const API_URL = 'https://api.nowpayments.io/v1/';
-    
-    // DOM Elements
-    const donateBtn = document.getElementById('donateBtn');
-    const paymentForm = document.getElementById('paymentForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const paymentDetails = document.getElementById('paymentDetails');
-    
-    // Initialize
-    createLeaves();
-    
-    // Event Listeners
-    donateBtn.addEventListener('click', () => {
-      paymentForm.style.display = 'block';
-      donateBtn.style.display = 'none';
-    });
-    
-    submitBtn.addEventListener('click', createPayment);
-    
     // Create floating leaves
     function createLeaves() {
       const container = document.getElementById('leaves-container');
@@ -292,78 +215,19 @@
         container.appendChild(leaf);
       }
     }
-    
-    // Create payment via API
-    async function createPayment() {
-      const amount = document.getElementById('amount').value;
-      const currency = document.getElementById('currency').value;
+
+    // Toggle widget visibility
+    document.getElementById('donateBtn').addEventListener('click', function() {
+      this.style.display = 'none';
+      document.getElementById('widgetContainer').style.display = 'block';
       
-      if (!amount || amount <= 0) {
-        alert('Please enter a valid amount');
-        return;
-      }
-      
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Processing...';
-      
-      try {
-        // First get estimated amount in crypto
-        const estimateResponse = await fetch(`${API_URL}estimate?amount=${amount}&currency_from=usd&currency_to=${currency}`, {
-          headers: {
-            'x-api-key': API_KEY
-          }
-        });
-        
-        const estimateData = await estimateResponse.json();
-        
-        if (!estimateResponse.ok) {
-          throw new Error(estimateData.message || 'Failed to get estimate');
-        }
-        
-        // Create payment invoice
-        const paymentResponse = await fetch(`${API_URL}invoice`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-api-key': API_KEY
-          },
-          body: JSON.stringify({
-            price_amount: amount,
-            price_currency: 'usd',
-            pay_currency: currency,
-            ipn_callback_url: 'https://yourwebsite.com/callback', // Replace with your callback URL
-            order_id: 'donation_' + Date.now(),
-            order_description: 'Donation to Green Mission'
-          })
-        });
-        
-        const paymentData = await paymentResponse.json();
-        
-        if (!paymentResponse.ok) {
-          throw new Error(paymentData.message || 'Failed to create payment');
-        }
-        
-        // Display payment details
-        document.getElementById('paymentAddress').textContent = paymentData.pay_address;
-        document.getElementById('paymentAmount').textContent = `${amount} USD (≈ ${estimateData.estimated_amount} ${currency.toUpperCase()})`;
-        document.getElementById('paymentCurrency').textContent = currency.toUpperCase();
-        
-        // Generate QR code (using a simple API)
-        const qrCodeImg = document.createElement('img');
-        qrCodeImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(`${currency}:${paymentData.pay_address}?amount=${estimateData.estimated_amount}`)}`;
-        document.getElementById('qrCode').innerHTML = '';
-        document.getElementById('qrCode').appendChild(qrCodeImg);
-        
-        paymentDetails.style.display = 'block';
-        
-      } catch (error) {
-        console.error('Payment error:', error);
-        alert('Error creating payment: ' + error.message);
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Generate Payment';
-      }
-    }
+      // Optional: Refresh the iframe to ensure it loads
+      const iframe = document.querySelector('#widgetContainer iframe');
+      iframe.src = iframe.src;
+    });
+
+    // Initialize leaves on load
+    window.onload = createLeaves;
   </script>
 </body>
 </html>
