@@ -15,7 +15,7 @@
       margin: 0;
       padding: 0;
       overflow-x: hidden;
-      height: 100vh;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -23,66 +23,30 @@
       background: linear-gradient(to bottom, #a5d6a7, #81c784);
     }
 
-    /* Forest Animation */
-    .forest {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
-    .tree {
-      position: absolute;
-      bottom: 0;
-      background-repeat: no-repeat;
-      background-size: contain;
-      animation: sway 5s infinite alternate ease-in-out;
-    }
-
-    .tree:nth-child(1) {
-      left: 5%;
-      height: 300px;
-      width: 150px;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><path fill="%232e7d32" d="M50 0 L75 100 L60 100 L80 200 L20 200 L40 100 L25 100 Z"/></svg>');
-      animation-delay: 0.5s;
-    }
-
-    .tree:nth-child(2) {
-      left: 25%;
-      height: 400px;
-      width: 200px;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><path fill="%23388e3c" d="M50 0 L30 50 L70 50 L40 100 L80 100 L50 150 L70 200 L30 200 Z"/></svg>');
-    }
-
-    .tree:nth-child(3) {
-      right: 15%;
-      height: 350px;
-      width: 180px;
-      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 200"><path fill="%234caf50" d="M50 0 L20 80 L80 80 L40 120 L90 120 L50 200 Z"/></svg>');
-      animation-delay: 1s;
-    }
-
     /* Main Content */
     .container {
       text-align: center;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 2.5rem;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 2rem;
       border-radius: 12px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
       max-width: 500px;
       width: 90%;
-      backdrop-filter: blur(5px);
+      margin: 2rem auto;
+      position: relative;
+      z-index: 1;
     }
 
     h1 {
       color: var(--primary-color);
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     p {
       color: #333;
       margin-bottom: 1.5rem;
       font-size: 1.1rem;
+      line-height: 1.6;
     }
 
     .crypto-btn {
@@ -94,8 +58,9 @@
       border-radius: 8px;
       font-weight: 600;
       transition: all 0.3s ease;
-      border: 2px solid transparent;
+      border: none;
       cursor: pointer;
+      margin: 1rem 0;
     }
 
     .crypto-btn:hover {
@@ -112,13 +77,20 @@
 
     /* Widget Container */
     .widget-container {
-      margin: 1.5rem auto 0;
-      width: 410px;
-      height: 696px;
+      margin: 2rem auto;
+      width: 100%;
+      max-width: 410px;
+      height: 650px;
       overflow: hidden;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
       display: none;
+    }
+
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
     }
 
     @media (max-width: 480px) {
@@ -127,39 +99,24 @@
       }
       
       .widget-container {
-        width: 100%;
-        height: 600px;
+        height: 580px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Animated Forest Background -->
-  <div class="forest">
-    <div class="tree"></div>
-    <div class="tree"></div>
-    <div class="tree"></div>
-  </div>
-
   <!-- Main Content -->
   <div class="container">
     <h1>Support Our Green Mission</h1>
     <p>Help us preserve nature with your crypto donation. Every contribution makes a difference!</p>
 
     <button class="crypto-btn" id="donateBtn">Donate with Crypto</button>
-    
-    <div id="widgetContainer" class="widget-container">
-      <!-- Updated iframe with working donation widget -->
-      <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=93H6N7Y-V304Y6S-H3E3M38-2SEWBQZ" 
-              width="100%" 
-              height="100%" 
-              frameborder="0" 
-              scrolling="no" 
-              style="overflow-y: hidden;">
-      </iframe>
-    </div>
-
     <p class="thank-you">Thank you for helping our planet breathe easier!</p>
+  </div>
+  
+  <!-- Widget Container (initially hidden) -->
+  <div id="widgetContainer" class="widget-container">
+    <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=93H6N7Y-V304Y6S-H3E3M38-2SEWBQZ"></iframe>
   </div>
 
   <script>
@@ -167,10 +124,12 @@
     document.getElementById('donateBtn').addEventListener('click', function() {
       this.style.display = 'none';
       document.getElementById('widgetContainer').style.display = 'block';
+      document.querySelector('.container').style.display = 'none';
       
-      // Refresh the iframe to ensure it loads
-      const iframe = document.querySelector('#widgetContainer iframe');
-      iframe.src = iframe.src;
+      // Scroll to widget for better mobile experience
+      document.getElementById('widgetContainer').scrollIntoView({
+        behavior: 'smooth'
+      });
     });
   </script>
 </body>
