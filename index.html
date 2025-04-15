@@ -2,134 +2,224 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Support Our Green Mission</title>
+  <title>Crypto Donation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     :root {
-      --primary-color: #2e7d32;
-      --hover-color: #1b5e20;
+      --primary: #2e7d32;
+      --primary-light: #4caf50;
+      --primary-dark: #1b5e20;
+      --text: #333;
+      --light-bg: #f5f9f5;
+      --border: #e0e0e0;
     }
-
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
+    
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      overflow-x: hidden;
-      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    
+    body {
+      background-color: #f8f8f8;
       display: flex;
-      align-items: center;
       justify-content: center;
-      position: relative;
-      background: linear-gradient(to bottom, #a5d6a7, #81c784);
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
-
-    /* Main Content */
-    .container {
-      text-align: center;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      max-width: 500px;
-      width: 90%;
-      margin: 2rem auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    h1 {
-      color: var(--primary-color);
-      margin-bottom: 1.5rem;
-    }
-
-    p {
-      color: #333;
-      margin-bottom: 1.5rem;
-      font-size: 1.1rem;
-      line-height: 1.6;
-    }
-
-    .crypto-btn {
-      display: inline-block;
-      padding: 12px 24px;
-      background-color: var(--primary-color);
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
-      margin: 1rem 0;
-    }
-
-    .crypto-btn:hover {
-      background-color: var(--hover-color);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    .thank-you {
-      margin-top: 1.5rem;
-      color: #2e7d32;
-      font-style: italic;
-    }
-
-    /* Widget Container */
-    .widget-container {
-      margin: 2rem auto;
+    
+    .donation-card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
       width: 100%;
-      max-width: 410px;
-      height: 650px;
+      max-width: 420px;
       overflow: hidden;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      display: none;
     }
-
-    iframe {
-      border: none;
+    
+    .donation-header {
+      background: var(--primary);
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+    
+    .donation-header h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    
+    .donation-body {
+      padding: 24px;
+    }
+    
+    .crypto-options {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    
+    .crypto-option {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .crypto-option:hover {
+      border-color: var(--primary-light);
+    }
+    
+    .crypto-option.active {
+      border-color: var(--primary);
+      background: var(--light-bg);
+    }
+    
+    .crypto-option img {
+      width: 32px;
+      height: 32px;
+      margin-bottom: 8px;
+    }
+    
+    .input-group {
+      margin-bottom: 20px;
+    }
+    
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    
+    .input-field {
+      position: relative;
+    }
+    
+    .input-field input {
       width: 100%;
-      height: 100%;
+      padding: 14px 16px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border 0.2s;
     }
-
-    @media (max-width: 480px) {
-      .container {
-        padding: 1.5rem;
-      }
-      
-      .widget-container {
-        height: 580px;
-      }
+    
+    .input-field input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+    
+    .currency-symbol {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    .min-amount {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 8px;
+    }
+    
+    .continue-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 12px;
+    }
+    
+    .continue-btn:hover {
+      background: var(--primary-dark);
+    }
+    
+    /* Animation */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .donation-card {
+      animation: fadeIn 0.4s ease-out;
     }
   </style>
 </head>
 <body>
-  <!-- Main Content -->
-  <div class="container">
-    <h1>Support Our Green Mission</h1>
-    <p>Help us preserve nature with your crypto donation. Every contribution makes a difference!</p>
-
-    <button class="crypto-btn" id="donateBtn">Donate with Crypto</button>
-    <p class="thank-you">Thank you for helping our planet breathe easier!</p>
-  </div>
-  
-  <!-- Widget Container (initially hidden) -->
-  <div id="widgetContainer" class="widget-container">
-    <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=93H6N7Y-V304Y6S-H3E3M38-2SEWBQZ"></iframe>
+  <div class="donation-card">
+    <div class="donation-header">
+      <h1>Donation</h1>
+    </div>
+    
+    <div class="donation-body">
+      <div class="crypto-options">
+        <div class="crypto-option active">
+          <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT">
+          <div>USDT</div>
+        </div>
+        <div class="crypto-option">
+          <img src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="TRX">
+          <div>TRX</div>
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <label>Enter amount</label>
+        <div class="input-field">
+          <input type="number" placeholder="0.00">
+          <span class="currency-symbol">USDT</span>
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <label>Enter amount</label>
+        <div class="input-field">
+          <input type="number" placeholder="0.00">
+          <span class="currency-symbol">USD</span>
+        </div>
+      </div>
+      
+      <div class="min-amount">Minimum: 8.253576 USDT</div>
+      
+      <button class="continue-btn">Continue</button>
+    </div>
   </div>
 
   <script>
-    // Toggle widget visibility
-    document.getElementById('donateBtn').addEventListener('click', function() {
-      this.style.display = 'none';
-      document.getElementById('widgetContainer').style.display = 'block';
-      document.querySelector('.container').style.display = 'none';
-      
-      // Scroll to widget for better mobile experience
-      document.getElementById('widgetContainer').scrollIntoView({
-        behavior: 'smooth'
+    // Toggle active crypto option
+    const options = document.querySelectorAll('.crypto-option');
+    options.forEach(option => {
+      option.addEventListener('click', () => {
+        options.forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
       });
+    });
+    
+    // Sync amount inputs
+    const usdtInput = document.querySelectorAll('input')[0];
+    const usdInput = document.querySelectorAll('input')[1];
+    
+    // Simple conversion example (1 USDT = 1 USD)
+    usdtInput.addEventListener('input', () => {
+      usdInput.value = usdtInput.value;
+    });
+    
+    usdInput.addEventListener('input', () => {
+      usdtInput.value = usdInput.value;
     });
   </script>
 </body>
