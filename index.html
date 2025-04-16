@@ -12,7 +12,7 @@
       --text: #333;
       --light-bg: #f5f9f5;
     }
-    
+
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
       margin: 0;
@@ -25,7 +25,7 @@
       overflow-x: hidden;
       position: relative;
     }
-    
+
     .main-container {
       width: 100%;
       max-width: 500px;
@@ -34,7 +34,7 @@
       position: relative;
       z-index: 2;
     }
-    
+
     .content-card {
       background: rgba(255, 255, 255, 0.95);
       border-radius: 16px;
@@ -47,31 +47,31 @@
       transition: all 0.5s ease-out;
       opacity: 1;
     }
-    
+
     .content-card.hide {
       transform: translateY(-20px);
       opacity: 0;
       pointer-events: none;
     }
-    
+
     h1 {
       color: var(--primary);
       margin-bottom: 20px;
       font-size: 1.8rem;
       animation: textGlow 3s ease infinite alternate;
     }
-    
+
     @keyframes textGlow {
       0% { text-shadow: 0 0 5px rgba(46, 125, 50, 0.3); }
       100% { text-shadow: 0 0 10px rgba(46, 125, 50, 0.6); }
     }
-    
+
     p {
       color: var(--text);
       margin-bottom: 25px;
       line-height: 1.6;
     }
-    
+
     .donate-btn {
       background: var(--primary);
       color: white;
@@ -86,13 +86,13 @@
       position: relative;
       overflow: hidden;
     }
-    
+
     .donate-btn:hover {
       background: var(--primary-dark);
       transform: translateY(-2px);
       box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
-    
+
     .donate-btn:after {
       content: "";
       position: absolute;
@@ -104,11 +104,11 @@
       transform: rotate(45deg);
       transition: all 0.5s;
     }
-    
+
     .donate-btn:hover:after {
       left: 100%;
     }
-    
+
     .widget-container {
       width: 100%;
       height: 650px;
@@ -122,18 +122,18 @@
       opacity: 0;
       transition: all 0.5s ease-out 0.2s;
     }
-    
+
     .widget-container.show {
       transform: translateY(0);
       opacity: 1;
     }
-    
-    iframe {
+
+    .widget-container iframe {
       border: none;
       width: 100%;
       height: 100%;
     }
-    
+
     /* Floating leaves animation */
     .floating-leaves {
       position: absolute;
@@ -144,7 +144,7 @@
       z-index: 1;
       pointer-events: none;
     }
-    
+
     .leaf {
       position: absolute;
       background-size: contain;
@@ -152,7 +152,7 @@
       opacity: 0;
       animation: float 15s linear infinite;
     }
-    
+
     @keyframes float {
       0% {
         transform: translateY(100vh) rotate(0deg);
@@ -169,7 +169,7 @@
         opacity: 0;
       }
     }
-    
+
     /* Pulsing circle decoration */
     .pulse-circle {
       position: absolute;
@@ -178,20 +178,80 @@
       z-index: -1;
       animation: pulse 8s ease infinite;
     }
-    
+
     @keyframes pulse {
       0% { transform: scale(1); opacity: 0.1; }
       50% { transform: scale(1.1); opacity: 0.2; }
       100% { transform: scale(1); opacity: 0.1; }
     }
-    
+
     @media (max-width: 480px) {
       .content-card {
         padding: 20px;
       }
-      
+
       .widget-container {
         height: 580px;
+      }
+    }
+
+    /* From waspros by Areszyn */
+    .card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 14px;
+      z-index: 1111;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+    }
+
+    .bg {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: calc(100% - 10px);
+      height: calc(100% - 10px);
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(24px);
+      border-radius: 10px;
+      overflow: hidden;
+      outline: 2px solid white;
+    }
+
+    .blob {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 50%;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-color: #4caf50;
+      opacity: 1;
+      filter: blur(12px);
+      animation: blob-bounce 12s infinite ease-in-out;
+    }
+
+    @keyframes blob-bounce {
+      0% {
+        transform: translate(-100%, -100%) translate3d(0, 0, 0);
+      }
+      25% {
+        transform: translate(-100%, -100%) translate3d(100%, 0, 0);
+      }
+      50% {
+        transform: translate(-100%, -100%) translate3d(100%, 100%, 0);
+      }
+      75% {
+        transform: translate(-100%, -100%) translate3d(0, 100%, 0);
+      }
+      100% {
+        transform: translate(-100%, -100%) translate3d(0, 0, 0);
       }
     }
   </style>
@@ -201,21 +261,25 @@
   <div class="floating-leaves" id="leavesContainer"></div>
   <div class="pulse-circle" style="width: 300px; height: 300px; top: -100px; right: -100px;"></div>
   <div class="pulse-circle" style="width: 200px; height: 200px; bottom: -50px; left: -50px; animation-delay: 2s;"></div>
-  
+
   <div class="main-container">
     <div class="content-card" id="contentCard">
       <h1>Support Our Green Mission</h1>
       <p>Help us preserve nature with your crypto donation. Every contribution helps plant trees and protect ecosystems.</p>
       <button class="donate-btn" id="donateBtn">Donate with Crypto</button>
     </div>
-    
+
     <div id="widgetContainer" class="widget-container">
-      <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=93H6N7Y-V304Y6S-H3E3M38-2SEWBQZ"></iframe>
+      <!-- From waspros by Areszyn -->
+      <div class="card">
+        <div class="bg"></div>
+        <div class="blob"></div>
+        <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=93H6N7Y-V304Y6S-H3E3M38-2SEWBQZ"></iframe>
+      </div>
     </div>
   </div>
 
   <script>
-    // Create floating leaves
     function createLeaves() {
       const container = document.getElementById('leavesContainer');
       const leafTypes = [
@@ -223,37 +287,35 @@
         'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%2381c784" d="M50 0 Q80 30 50 80 Q20 30 50 0 Z"/></svg>',
         'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%232e7d32" d="M30 0 L70 0 L100 50 L70 100 L30 100 L0 50 Z"/></svg>'
       ];
-      
+
       for (let i = 0; i < 12; i++) {
         const leaf = document.createElement('div');
         leaf.className = 'leaf';
-        
+
         const size = Math.random() * 30 + 20;
         const startX = Math.random() * 100;
         const duration = Math.random() * 10 + 10;
         const delay = Math.random() * 15;
         const type = Math.floor(Math.random() * leafTypes.length);
-        
+
         leaf.style.width = `${size}px`;
         leaf.style.height = `${size}px`;
         leaf.style.left = `${startX}vw`;
         leaf.style.backgroundImage = `url('${leafTypes[type]}')`;
         leaf.style.animationDuration = `${duration}s`;
         leaf.style.animationDelay = `${delay}s`;
-        
+
         container.appendChild(leaf);
       }
     }
-    
-    // Toggle widget visibility
+
     document.getElementById('donateBtn').addEventListener('click', function() {
       document.getElementById('contentCard').classList.add('hide');
       document.getElementById('widgetContainer').style.display = 'block';
       setTimeout(() => {
         document.getElementById('widgetContainer').classList.add('show');
       }, 50);
-      
-      // Smooth scroll to widget
+
       setTimeout(() => {
         document.getElementById('widgetContainer').scrollIntoView({
           behavior: 'smooth',
@@ -261,12 +323,9 @@
         });
       }, 300);
     });
-    
-    // Initialize animations
+
     window.addEventListener('load', function() {
       createLeaves();
-      
-      // Add slight delay for initial animations
       setTimeout(() => {
         document.body.style.opacity = '1';
       }, 100);
