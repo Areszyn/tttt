@@ -12,7 +12,6 @@
       --text: #333;
       --light-bg: #f5f9f5;
     }
-
     body {
       font-family: 'Segoe UI', system-ui, sans-serif;
       margin: 0;
@@ -20,20 +19,11 @@
       background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
       overflow-x: hidden;
       position: relative;
     }
-
-    .merchant-id {
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 500;
-      color: #2e7d32;
-      margin-top: 16px;
-    }
-
     .main-container {
       width: 100%;
       max-width: 500px;
@@ -42,7 +32,6 @@
       position: relative;
       z-index: 2;
     }
-
     .content-card {
       background: rgba(255, 255, 255, 0.95);
       border-radius: 16px;
@@ -55,31 +44,26 @@
       transition: all 0.5s ease-out;
       opacity: 1;
     }
-
     .content-card.hide {
       transform: translateY(-20px);
       opacity: 0;
       pointer-events: none;
     }
-
     h1 {
       color: var(--primary);
       margin-bottom: 20px;
       font-size: 1.8rem;
       animation: textGlow 3s ease infinite alternate;
     }
-
     @keyframes textGlow {
       0% { text-shadow: 0 0 5px rgba(46, 125, 50, 0.3); }
       100% { text-shadow: 0 0 10px rgba(46, 125, 50, 0.6); }
     }
-
     p {
       color: var(--text);
       margin-bottom: 25px;
       line-height: 1.6;
     }
-
     .donate-btn {
       background: var(--primary);
       color: white;
@@ -94,13 +78,11 @@
       position: relative;
       overflow: hidden;
     }
-
     .donate-btn:hover {
       background: var(--primary-dark);
       transform: translateY(-2px);
       box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
-
     .donate-btn:after {
       content: "";
       position: absolute;
@@ -112,11 +94,9 @@
       transform: rotate(45deg);
       transition: all 0.5s;
     }
-
     .donate-btn:hover:after {
       left: 100%;
     }
-
     .widget-container {
       width: 100%;
       height: 650px;
@@ -130,18 +110,20 @@
       opacity: 0;
       transition: all 0.5s ease-out 0.2s;
     }
-
     .widget-container.show {
       transform: translateY(0);
       opacity: 1;
     }
-
     .widget-container iframe {
       border: none;
       width: 100%;
       height: 100%;
     }
-
+    .merchant-id {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--primary-dark);
+    }
     .floating-leaves {
       position: absolute;
       width: 100%;
@@ -151,7 +133,6 @@
       z-index: 1;
       pointer-events: none;
     }
-
     .leaf {
       position: absolute;
       background-size: contain;
@@ -159,24 +140,18 @@
       opacity: 0;
       animation: float 15s linear infinite;
     }
-
     @keyframes float {
       0% {
         transform: translateY(100vh) rotate(0deg);
         opacity: 0;
       }
-      10% {
-        opacity: 0.6;
-      }
-      90% {
-        opacity: 0.6;
-      }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
       100% {
         transform: translateY(-100px) rotate(360deg);
         opacity: 0;
       }
     }
-
     .pulse-circle {
       position: absolute;
       border-radius: 50%;
@@ -184,18 +159,15 @@
       z-index: -1;
       animation: pulse 8s ease infinite;
     }
-
     @keyframes pulse {
       0% { transform: scale(1); opacity: 0.1; }
       50% { transform: scale(1.1); opacity: 0.2; }
       100% { transform: scale(1); opacity: 0.1; }
     }
-
     @media (max-width: 480px) {
       .content-card {
         padding: 20px;
       }
-
       .widget-container {
         height: 580px;
       }
@@ -203,23 +175,20 @@
   </style>
 </head>
 <body>
-  <div class="merchant-id">
-    Merchant ID: ebec0b5d-bd81-4781-9f27-b0dff787b02e
-  </div>
-
   <div class="floating-leaves" id="leavesContainer"></div>
   <div class="pulse-circle" style="width: 300px; height: 300px; top: -100px; right: -100px;"></div>
   <div class="pulse-circle" style="width: 200px; height: 200px; bottom: -50px; left: -50px; animation-delay: 2s;"></div>
-
   <div class="main-container">
     <div class="content-card" id="contentCard">
       <h1>Support Our Green Mission</h1>
       <p>Help us preserve nature with your crypto donation. Every contribution helps plant trees and protect ecosystems.</p>
       <button class="donate-btn" id="donateBtn">Donate with Crypto</button>
     </div>
-
     <div id="widgetContainer" class="widget-container">
       <iframe src="https://nowpayments.io/embeds/donation-widget?api_key=93H6N7Y-V304Y6S-H3E3M38-2SEWBQZ"></iframe>
+    </div>
+    <div class="merchant-id">
+      Merchant ID: ebec0b5d-bd81-4781-9f27-b0dff787b02e
     </div>
   </div>
 
